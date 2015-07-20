@@ -1,10 +1,9 @@
 # philiprehberger-human_size
 
-[![Tests](https://github.com/philiprehberger/rb-human-size/actions/workflows/ci.yml/badge.svg)](https://github.com/philiprehberger/rb-human-size/actions/workflows/ci.yml)
-[![Gem Version](https://badge.fury.io/rb/philiprehberger-human_size.svg)](https://rubygems.org/gems/philiprehberger-human_size)
-[![License](https://img.shields.io/github/license/philiprehberger/rb-human-size)](LICENSE)
+[![Gem Version](https://badge.fury.io/rb/philiprehberger-human_size.svg)](https://badge.fury.io/rb/philiprehberger-human_size)
+[![CI](https://github.com/philiprehberger/rb-human-size/actions/workflows/ci.yml/badge.svg)](https://github.com/philiprehberger/rb-human-size/actions/workflows/ci.yml)
 
-Bidirectional byte size formatting with SI and binary units
+Bidirectional byte size formatting with SI and binary units. Convert integer bytes to human-readable strings and parse them back.
 
 ## Requirements
 
@@ -12,16 +11,14 @@ Bidirectional byte size formatting with SI and binary units
 
 ## Installation
 
-Add to your Gemfile:
+```sh
+gem install philiprehberger-human_size
+```
+
+Or add to your Gemfile:
 
 ```ruby
 gem 'philiprehberger-human_size'
-```
-
-Or install directly:
-
-```bash
-gem install philiprehberger-human_size
 ```
 
 ## Usage
@@ -29,51 +26,35 @@ gem install philiprehberger-human_size
 ```ruby
 require 'philiprehberger/human_size'
 
-Philiprehberger::HumanSize.format(1_500_000)                        # => "1.5 MB"
-Philiprehberger::HumanSize.format(1_572_864, binary: true)          # => "1.5 MiB"
-Philiprehberger::HumanSize.format(1_500_000, precision: 0)          # => "2 MB"
-```
+# Format bytes to human-readable strings
+Philiprehberger::HumanSize.format(1_500_000)                # => "1.5 MB"
+Philiprehberger::HumanSize.format(1_572_864, binary: true)  # => "1.5 MiB"
+Philiprehberger::HumanSize.format(1_500_000, precision: 0)  # => "2 MB"
 
-### Parsing
-
-```ruby
+# Parse human-readable strings back to bytes
 Philiprehberger::HumanSize.parse('1.5 GB')   # => 1500000000
 Philiprehberger::HumanSize.parse('500 KiB')  # => 512000
 Philiprehberger::HumanSize.parse('1 TB')     # => 1000000000000
 ```
 
-### Binary Units
-
-Use `binary: true` to format with base-1024 units (KiB, MiB, GiB):
-
-```ruby
-Philiprehberger::HumanSize.format(1_073_741_824, binary: true)  # => "1 GiB"
-```
-
-### Precision
-
-Control decimal places with the `precision` option:
-
-```ruby
-Philiprehberger::HumanSize.format(1_234_567, precision: 3)  # => "1.235 MB"
-Philiprehberger::HumanSize.format(1_234_567, precision: 0)  # => "1 MB"
-```
-
 ## API
 
-| Method | Description |
-|--------|-------------|
-| `HumanSize.format(bytes, binary: false, precision: 2)` | Format bytes as a human-readable string |
-| `HumanSize.parse(string)` | Parse a human-readable byte string back to bytes |
+### `HumanSize.format(bytes, binary: false, precision: 2)`
+
+Converts an integer byte count to a human-readable string. Use `binary: true` for base-1024 units (KiB, MiB, GiB). The `precision` option controls the number of decimal places.
+
+### `HumanSize.parse(string)`
+
+Parses a human-readable byte string (e.g., `"1.5 GB"`, `"500 KiB"`) back to an integer byte count. Supports both SI and binary unit suffixes. Case-insensitive.
 
 ## Development
 
-```bash
+```sh
 bundle install
-bundle exec rspec      # Run tests
-bundle exec rubocop    # Check code style
+bundle exec rspec
+bundle exec rubocop
 ```
 
 ## License
 
-MIT
+MIT License. See [LICENSE](LICENSE) for details.
