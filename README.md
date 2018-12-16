@@ -27,7 +27,7 @@ gem install philiprehberger-human_size
 ## Usage
 
 ```ruby
-require 'philiprehberger/human_size'
+require "philiprehberger/human_size"
 
 # Format bytes to human-readable strings
 Philiprehberger::HumanSize.format(1_500_000)                # => "1.5 MB"
