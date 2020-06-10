@@ -3,6 +3,7 @@
 [![Tests](https://github.com/philiprehberger/rb-human-size/actions/workflows/ci.yml/badge.svg)](https://github.com/philiprehberger/rb-human-size/actions/workflows/ci.yml)
 [![Gem Version](https://badge.fury.io/rb/philiprehberger-human_size.svg)](https://rubygems.org/gems/philiprehberger-human_size)
 [![License](https://img.shields.io/github/license/philiprehberger/rb-human-size)](LICENSE)
+[![Sponsor](https://img.shields.io/badge/sponsor-GitHub%20Sponsors-ec6cb9)](https://github.com/sponsors/philiprehberger)
 
 Bidirectional byte size formatting with SI and binary units
 
@@ -88,4 +89,4 @@ bundle exec rubocop
 
 ## License
 
-MIT
+[MIT](LICENSE)
