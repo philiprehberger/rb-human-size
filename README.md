@@ -28,6 +28,8 @@ gem install philiprehberger-human_size
 
 ```ruby
 require "philiprehberger/human_size"
+
+Philiprehberger::HumanSize.format(1_500_000)  # => "1.5 MB"
 ```
 
 ### Formatting Bytes
@@ -71,12 +73,34 @@ Philiprehberger::HumanSize.parse("1 TB")     # => 1000000000000
 Philiprehberger::HumanSize.parse("2.5 MiB")  # => 2621440
 ```
 
+### Structured Output
+
+Use `format_parts` to get the numeric value and unit separately:
+
+```ruby
+Philiprehberger::HumanSize.format_parts(1_500_000)                  # => { value: 1.5, unit: "MB" }
+Philiprehberger::HumanSize.format_parts(1_572_864, binary: true)    # => { value: 1.5, unit: "MiB" }
+Philiprehberger::HumanSize.format_parts(0)                          # => { value: 0.0, unit: "B" }
+```
+
+### Validation
+
+Check if a string is a valid byte size without raising:
+
+```ruby
+Philiprehberger::HumanSize.valid?("1.5 GB")   # => true
+Philiprehberger::HumanSize.valid?("nope")      # => false
+Philiprehberger::HumanSize.valid?(123)          # => false
+```
+
 ## API
 
 | Method | Description |
 |--------|-------------|
 | `HumanSize.format(bytes, binary: false, precision: 2)` | Convert integer bytes to a human-readable string (SI or binary units) |
+| `HumanSize.format_parts(bytes, binary: false, precision: 2)` | Return a hash with `:value` (Float) and `:unit` (String) |
 | `HumanSize.parse(string)` | Parse a human-readable byte string back to an integer byte count |
+| `HumanSize.valid?(string)` | Check if a string is a valid parseable byte size |
 
 ## Development
 
