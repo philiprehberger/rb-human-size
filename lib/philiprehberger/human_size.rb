@@ -43,6 +43,18 @@ module Philiprehberger
         { value: parts[:value], unit: parts[:unit] }
       end
 
+      def convert(bytes, unit:, precision: 2)
+        raise Error, 'bytes must be a Numeric' unless bytes.is_a?(Numeric)
+        raise Error, 'unit must be a String' unless unit.is_a?(String)
+
+        key = unit.upcase
+        factor = UNIT_FACTORS[key]
+        raise Error, "unknown unit: #{unit}" unless factor
+
+        value = bytes.to_f / factor
+        "#{sprintf("%.#{precision}f", value)} #{unit}" # rubocop:disable Style/FormatString
+      end
+
       def parse(string)
         raise Error, 'input must be a String' unless string.is_a?(String)
 

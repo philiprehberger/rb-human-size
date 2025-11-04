@@ -62,6 +62,16 @@ Philiprehberger::HumanSize.format(1_234_567, precision: 3)  # => "1.235 MB"
 Philiprehberger::HumanSize.format(1_500_000, precision: 4)  # => "1.5 MB"
 ```
 
+### Fixed-unit formatting
+
+Use `convert` to format bytes to a specific unit (rather than auto-picking the largest fitting unit). The `precision` option controls the number of decimal places (default is 2):
+
+```ruby
+Philiprehberger::HumanSize.convert(1_500_000, unit: "MB")              # => "1.50 MB"
+Philiprehberger::HumanSize.convert(1024 * 1024, unit: "MiB")           # => "1.00 MiB"
+Philiprehberger::HumanSize.convert(1_500_000, unit: "MB", precision: 0) # => "2 MB"
+```
+
 ### Parsing
 
 Parse human-readable byte strings back to integer byte counts. Parsing is case-insensitive and supports both SI and binary units:
@@ -99,6 +109,7 @@ Philiprehberger::HumanSize.valid?(123)          # => false
 |--------|-------------|
 | `HumanSize.format(bytes, binary: false, precision: 2)` | Convert integer bytes to a human-readable string (SI or binary units) |
 | `HumanSize.format_parts(bytes, binary: false, precision: 2)` | Return a hash with `:value` (Float) and `:unit` (String) |
+| `HumanSize.convert(bytes, unit:, precision: 2)` | Format bytes to a specific unit (e.g. `'MB'`, `'GiB'`); raises `HumanSize::Error` on unknown units |
 | `HumanSize.parse(string)` | Parse a human-readable byte string back to an integer byte count |
 | `HumanSize.valid?(string)` | Check if a string is a valid parseable byte size |
 
