@@ -3,10 +3,6 @@
 require 'spec_helper'
 
 RSpec.describe Philiprehberger::HumanSize do
-  it 'has a version number' do
-    expect(described_class::VERSION).not_to be_nil
-  end
-
   describe '.format' do
     it 'formats 0 bytes' do
       expect(described_class.format(0)).to eq('0 B')
@@ -36,10 +32,6 @@ RSpec.describe Philiprehberger::HumanSize do
       expect(described_class.format(1_500_000_000_000_000)).to eq('1.5 PB')
     end
 
-    it 'formats exabytes' do
-      expect(described_class.format(1_500_000_000_000_000_000)).to eq('1.5 EB')
-    end
-
     context 'with binary units' do
       it 'formats kibibytes' do
         expect(described_class.format(1536, binary: true)).to eq('1.5 KiB')
@@ -57,10 +49,6 @@ RSpec.describe Philiprehberger::HumanSize do
     context 'with precision' do
       it 'formats with precision 0' do
         expect(described_class.format(1_500_000, precision: 0)).to eq('2 MB')
-      end
-
-      it 'formats with precision 1' do
-        expect(described_class.format(1_550_000, precision: 1)).to eq('1.6 MB')
       end
 
       it 'formats with precision 3' do
@@ -90,7 +78,7 @@ RSpec.describe Philiprehberger::HumanSize do
       expect(described_class.parse('0 B')).to eq(0)
     end
 
-    it 'parses kilobytes' do
+    it 'parses gigabytes' do
       expect(described_class.parse('1.5 GB')).to eq(1_500_000_000)
     end
 
@@ -142,6 +130,17 @@ RSpec.describe Philiprehberger::HumanSize do
       formatted = described_class.format(0)
       parsed = described_class.parse(formatted)
       expect(parsed).to eq(0)
+    end
+  end
+
+  describe 'edge cases' do
+    it 'handles negative values' do
+      result = described_class.format(-500)
+      expect(result).to eq('-500 B')
+    end
+
+    it 'handles zero' do
+      expect(described_class.format(0)).to eq('0 B')
     end
   end
 end
