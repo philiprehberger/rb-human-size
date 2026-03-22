@@ -1,8 +1,8 @@
 # philiprehberger-human_size
 
-[![Gem Version](https://badge.fury.io/rb/philiprehberger-human_size.svg)](https://badge.fury.io/rb/philiprehberger-human_size)
-$badge_line
-[![CI](https://github.com/philiprehberger/rb-human-size/actions/workflows/ci.yml/badge.svg)](https://github.com/philiprehberger/rb-human-size/actions/workflows/ci.yml)
+[![Tests](https://github.com/philiprehberger/rb-human-size/actions/workflows/ci.yml/badge.svg)](https://github.com/philiprehberger/rb-human-size/actions/workflows/ci.yml)
+[![Gem Version](https://badge.fury.io/rb/philiprehberger-human_size.svg)](https://rubygems.org/gems/philiprehberger-human_size)
+[![License](https://img.shields.io/github/license/philiprehberger/rb-human-size)](LICENSE)
 
 Bidirectional byte size formatting with SI and binary units. Convert integer bytes to human-readable strings and parse them back.
 
