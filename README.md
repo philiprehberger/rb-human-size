@@ -1,6 +1,7 @@
 # philiprehberger-human_size
 
 [![Gem Version](https://badge.fury.io/rb/philiprehberger-human_size.svg)](https://badge.fury.io/rb/philiprehberger-human_size)
+$badge_line
 [![CI](https://github.com/philiprehberger/rb-human-size/actions/workflows/ci.yml/badge.svg)](https://github.com/philiprehberger/rb-human-size/actions/workflows/ci.yml)
 
 Bidirectional byte size formatting with SI and binary units. Convert integer bytes to human-readable strings and parse them back.
