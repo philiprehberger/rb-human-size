@@ -4,7 +4,7 @@
 [![Gem Version](https://badge.fury.io/rb/philiprehberger-human_size.svg)](https://rubygems.org/gems/philiprehberger-human_size)
 [![License](https://img.shields.io/github/license/philiprehberger/rb-human-size)](LICENSE)
 
-Bidirectional byte size formatting with SI and binary units. Convert integer bytes to human-readable strings and parse them back.
+Bidirectional byte size formatting with SI and binary units
 
 ## Requirements
 
@@ -12,14 +12,16 @@ Bidirectional byte size formatting with SI and binary units. Convert integer byt
 
 ## Installation
 
-```sh
-gem install philiprehberger-human_size
-```
-
-Or add to your Gemfile:
+Add to your Gemfile:
 
 ```ruby
 gem 'philiprehberger-human_size'
+```
+
+Or install directly:
+
+```bash
+gem install philiprehberger-human_size
 ```
 
 ## Usage
@@ -50,7 +52,7 @@ Parses a human-readable byte string (e.g., `"1.5 GB"`, `"500 KiB"`) back to an i
 
 ## Development
 
-```sh
+```bash
 bundle install
 bundle exec rspec
 bundle exec rubocop
@@ -58,4 +60,4 @@ bundle exec rubocop
 
 ## License
 
-MIT License. See [LICENSE](LICENSE) for details.
+MIT
