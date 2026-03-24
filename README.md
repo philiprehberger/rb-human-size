@@ -15,7 +15,7 @@ Bidirectional byte size formatting with SI and binary units
 Add to your Gemfile:
 
 ```ruby
-gem 'philiprehberger-human_size'
+gem "philiprehberger-human_size"
 ```
 
 Or install directly:
@@ -42,13 +42,10 @@ Philiprehberger::HumanSize.parse('1 TB')     # => 1000000000000
 
 ## API
 
-### `HumanSize.format(bytes, binary: false, precision: 2)`
-
-Converts an integer byte count to a human-readable string. Use `binary: true` for base-1024 units (KiB, MiB, GiB). The `precision` option controls the number of decimal places.
-
-### `HumanSize.parse(string)`
-
-Parses a human-readable byte string (e.g., `"1.5 GB"`, `"500 KiB"`) back to an integer byte count. Supports both SI and binary unit suffixes. Case-insensitive.
+| Method | Description |
+|--------|-------------|
+| `HumanSize.format(bytes, binary: false, precision: 2)` | Convert integer bytes to a human-readable string (SI or binary units) |
+| `HumanSize.parse(string)` | Parse a human-readable byte string back to an integer byte count |
 
 ## Development
 
