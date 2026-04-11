@@ -6,8 +6,8 @@ module Philiprehberger
   module HumanSize
     class Error < StandardError; end
 
-    SI_UNITS = %w[B KB MB GB TB PB].freeze
-    BINARY_UNITS = %w[B KiB MiB GiB TiB PiB].freeze
+    SI_UNITS = %w[B KB MB GB TB PB EB].freeze
+    BINARY_UNITS = %w[B KiB MiB GiB TiB PiB EiB].freeze
 
     SI_BASE = 1000
     BINARY_BASE = 1024
@@ -21,39 +21,26 @@ module Philiprehberger
       'GB' => 1000**3,
       'TB' => 1000**4,
       'PB' => 1000**5,
+      'EB' => 1000**6,
       'KIB' => 1024,
       'MIB' => 1024**2,
       'GIB' => 1024**3,
       'TIB' => 1024**4,
-      'PIB' => 1024**5
+      'PIB' => 1024**5,
+      'EIB' => 1024**6
     }.freeze
 
     class << self
       def format(bytes, binary: false, precision: 2)
-        raise Error, 'bytes must be a Numeric' unless bytes.is_a?(Numeric)
+        parts = compute_parts(bytes, binary: binary, precision: precision)
 
-        units = binary ? BINARY_UNITS : SI_UNITS
-        base = binary ? BINARY_BASE : SI_BASE
+        "#{format_value(parts[:value], parts[:unit_index], precision)} #{parts[:unit]}"
+      end
 
-        return "0 #{units[0]}" if bytes.zero?
+      def format_parts(bytes, binary: false, precision: 2)
+        parts = compute_parts(bytes, binary: binary, precision: precision)
 
-        negative = bytes.negative?
-        size = bytes.abs.to_f
-
-        unit_index = 0
-        while size >= base && unit_index < units.length - 1
-          size /= base
-          unit_index += 1
-        end
-
-        formatted = if unit_index.zero?
-                      bytes.to_i.to_s
-                    else
-                      number = negative ? -size : size
-                      format_number(number, precision)
-                    end
-
-        "#{formatted} #{units[unit_index]}"
+        { value: parts[:value], unit: parts[:unit] }
       end
 
       def parse(string)
@@ -71,7 +58,51 @@ module Philiprehberger
         (number * factor).round
       end
 
+      def valid?(string)
+        return false unless string.is_a?(String)
+
+        parse(string)
+        true
+      rescue Error
+        false
+      end
+
       private
+
+      def compute_parts(bytes, binary:, precision:)
+        raise Error, 'bytes must be a Numeric' unless bytes.is_a?(Numeric)
+
+        units = binary ? BINARY_UNITS : SI_UNITS
+        base = binary ? BINARY_BASE : SI_BASE
+
+        return { value: 0.0, unit: units[0], unit_index: 0 } if bytes.zero?
+
+        negative = bytes.negative?
+        size = bytes.abs.to_f
+
+        unit_index = 0
+        while size >= base && unit_index < units.length - 1
+          size /= base
+          unit_index += 1
+        end
+
+        value = if unit_index.zero?
+                  bytes.to_f
+                else
+                  rounded = format_number(negative ? -size : size, precision).to_f
+                  rounded
+                end
+
+        { value: value, unit: units[unit_index], unit_index: unit_index }
+      end
+
+      def format_value(value, unit_index, precision)
+        if unit_index.zero?
+          value.to_i.to_s
+        else
+          format_number(value, precision)
+        end
+      end
 
       def format_number(number, precision)
         result = sprintf("%.#{precision}f", number) # rubocop:disable Style/FormatString

@@ -32,6 +32,10 @@ RSpec.describe Philiprehberger::HumanSize do
       expect(described_class.format(1_500_000_000_000_000)).to eq('1.5 PB')
     end
 
+    it 'formats exabytes' do
+      expect(described_class.format(1_500_000_000_000_000_000)).to eq('1.5 EB')
+    end
+
     context 'with binary units' do
       it 'formats kibibytes' do
         expect(described_class.format(1536, binary: true)).to eq('1.5 KiB')
@@ -43,6 +47,10 @@ RSpec.describe Philiprehberger::HumanSize do
 
       it 'formats gibibytes' do
         expect(described_class.format(1_610_612_736, binary: true)).to eq('1.5 GiB')
+      end
+
+      it 'formats exbibytes' do
+        expect(described_class.format(1_729_382_256_910_270_464, binary: true)).to eq('1.5 EiB')
       end
     end
 
@@ -73,6 +81,37 @@ RSpec.describe Philiprehberger::HumanSize do
     end
   end
 
+  describe '.format_parts' do
+    it 'returns value and unit for megabytes' do
+      result = described_class.format_parts(1_500_000)
+      expect(result).to eq({ value: 1.5, unit: 'MB' })
+    end
+
+    it 'returns value and unit for binary units' do
+      result = described_class.format_parts(1_572_864, binary: true)
+      expect(result).to eq({ value: 1.5, unit: 'MiB' })
+    end
+
+    it 'returns zero with B unit' do
+      result = described_class.format_parts(0)
+      expect(result).to eq({ value: 0.0, unit: 'B' })
+    end
+
+    it 'respects precision' do
+      result = described_class.format_parts(1_234_567, precision: 3)
+      expect(result).to eq({ value: 1.235, unit: 'MB' })
+    end
+
+    it 'returns bytes for small values' do
+      result = described_class.format_parts(500)
+      expect(result).to eq({ value: 500.0, unit: 'B' })
+    end
+
+    it 'raises Error for non-numeric input' do
+      expect { described_class.format_parts('hello') }.to raise_error(described_class::Error)
+    end
+  end
+
   describe '.parse' do
     it 'parses bytes' do
       expect(described_class.parse('0 B')).to eq(0)
@@ -88,6 +127,14 @@ RSpec.describe Philiprehberger::HumanSize do
 
     it 'parses terabytes' do
       expect(described_class.parse('1 TB')).to eq(1_000_000_000_000)
+    end
+
+    it 'parses exabytes' do
+      expect(described_class.parse('1 EB')).to eq(1_000_000_000_000_000_000)
+    end
+
+    it 'parses exbibytes' do
+      expect(described_class.parse('1 EiB')).to eq(1_152_921_504_606_846_976)
     end
 
     it 'parses case-insensitively' do
@@ -111,6 +158,32 @@ RSpec.describe Philiprehberger::HumanSize do
     end
   end
 
+  describe '.valid?' do
+    it 'returns true for valid SI strings' do
+      expect(described_class.valid?('1.5 GB')).to be true
+    end
+
+    it 'returns true for valid binary strings' do
+      expect(described_class.valid?('500 KiB')).to be true
+    end
+
+    it 'returns true for exabytes' do
+      expect(described_class.valid?('1 EB')).to be true
+    end
+
+    it 'returns false for unparseable strings' do
+      expect(described_class.valid?('not a size')).to be false
+    end
+
+    it 'returns false for unknown units' do
+      expect(described_class.valid?('100 XB')).to be false
+    end
+
+    it 'returns false for non-string input' do
+      expect(described_class.valid?(123)).to be false
+    end
+  end
+
   describe 'roundtrip' do
     it 'roundtrips SI format and parse' do
       original = 1_500_000
@@ -130,6 +203,13 @@ RSpec.describe Philiprehberger::HumanSize do
       formatted = described_class.format(0)
       parsed = described_class.parse(formatted)
       expect(parsed).to eq(0)
+    end
+
+    it 'roundtrips exabytes' do
+      original = 1_500_000_000_000_000_000
+      formatted = described_class.format(original)
+      parsed = described_class.parse(formatted)
+      expect(parsed).to eq(original)
     end
   end
 
