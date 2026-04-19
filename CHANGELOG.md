@@ -7,6 +7,11 @@ and this gem adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-04-18
+
+### Added
+- `HumanSize.convert(bytes, unit:, precision: 2)` — formats bytes to a specific unit (e.g. `'MB'`, `'GiB'`) rather than auto-picking the largest fitting unit; raises `HumanSize::Error` on unknown units
+
 ## [0.3.0] - 2026-04-10
 
 ### Added
@@ -89,7 +94,8 @@ and this gem adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Configurable decimal precision
 - Case-insensitive unit parsing
 
-[Unreleased]: https://github.com/philiprehberger/rb-human-size/compare/v0.3.0...HEAD
+[Unreleased]: https://github.com/philiprehberger/rb-human-size/compare/v0.4.0...HEAD
+[0.4.0]: https://github.com/philiprehberger/rb-human-size/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/philiprehberger/rb-human-size/compare/v0.2.2...v0.3.0
 [0.2.2]: https://github.com/philiprehberger/rb-human-size/compare/v0.2.1...v0.2.2
 [0.2.1]: https://github.com/philiprehberger/rb-human-size/compare/v0.2.0...v0.2.1

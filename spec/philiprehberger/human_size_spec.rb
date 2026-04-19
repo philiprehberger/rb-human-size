@@ -213,6 +213,32 @@ RSpec.describe Philiprehberger::HumanSize do
     end
   end
 
+  describe '.convert' do
+    it 'converts bytes to MB with default precision' do
+      expect(described_class.convert(1_500_000, unit: 'MB')).to eq('1.50 MB')
+    end
+
+    it 'converts bytes to MiB' do
+      expect(described_class.convert(1024 * 1024, unit: 'MiB')).to eq('1.00 MiB')
+    end
+
+    it 'raises Error for unknown unit' do
+      expect { described_class.convert(1000, unit: 'XB') }.to raise_error(described_class::Error)
+    end
+
+    it 'respects precision 0' do
+      expect(described_class.convert(1_500_000, unit: 'MB', precision: 0)).to eq('2 MB')
+    end
+
+    it 'handles zero bytes' do
+      expect(described_class.convert(0, unit: 'KB')).to eq('0.00 KB')
+    end
+
+    it 'converts exabytes' do
+      expect(described_class.convert(10**18, unit: 'EB')).to eq('1.00 EB')
+    end
+  end
+
   describe 'edge cases' do
     it 'handles negative values' do
       result = described_class.format(-500)
