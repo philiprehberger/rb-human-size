@@ -55,6 +55,23 @@ module Philiprehberger
         "#{sprintf("%.#{precision}f", value)} #{unit}" # rubocop:disable Style/FormatString
       end
 
+      # Format a throughput rate (bytes over a time window) as a human-readable
+      # string suffixed with `/s` (e.g. `1.5 MB/s`, `256 KiB/s`).
+      #
+      # @param bytes [Numeric] bytes transferred
+      # @param seconds [Numeric] elapsed time in seconds (must be > 0)
+      # @param binary [Boolean] use binary units (KiB, MiB, ...)
+      # @param precision [Integer] decimal precision
+      # @return [String] formatted rate ending with `/s`
+      # @raise [Error] if `seconds` is not a positive Numeric
+      def format_rate(bytes, seconds, binary: false, precision: 2)
+        raise Error, 'seconds must be a Numeric' unless seconds.is_a?(Numeric)
+        raise Error, 'seconds must be positive' unless seconds.positive?
+
+        per_second = bytes.to_f / seconds
+        "#{format(per_second, binary: binary, precision: precision)}/s"
+      end
+
       def parse(string)
         raise Error, 'input must be a String' unless string.is_a?(String)
 

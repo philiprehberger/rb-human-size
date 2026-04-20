@@ -7,6 +7,11 @@ and this gem adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-04-21
+
+### Added
+- `HumanSize.format_rate(bytes, seconds, binary: false, precision: 2)` — formats a throughput rate as a human-readable string ending in `/s` (e.g. `1.5 MB/s`); raises `HumanSize::Error` for non-positive seconds
+
 ## [0.4.0] - 2026-04-18
 
 ### Added
