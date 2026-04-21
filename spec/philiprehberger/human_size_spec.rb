@@ -249,4 +249,40 @@ RSpec.describe Philiprehberger::HumanSize do
       expect(described_class.format(0)).to eq('0 B')
     end
   end
+
+  describe '.format_rate' do
+    it 'formats a basic throughput in SI units' do
+      # 1.5 MB/s = 1_500_000 bytes per 1 second
+      expect(described_class.format_rate(1_500_000, 1)).to eq('1.5 MB/s')
+    end
+
+    it 'formats a basic throughput in binary units' do
+      expect(described_class.format_rate(1_048_576, 1, binary: true)).to eq('1 MiB/s')
+    end
+
+    it 'divides bytes by seconds before formatting' do
+      # 3 MB over 2 seconds ⇒ 1.5 MB/s
+      expect(described_class.format_rate(3_000_000, 2)).to eq('1.5 MB/s')
+    end
+
+    it 'supports fractional seconds' do
+      expect(described_class.format_rate(500_000, 0.5)).to eq('1 MB/s')
+    end
+
+    it 'raises when seconds is zero' do
+      expect { described_class.format_rate(1000, 0) }.to raise_error(Philiprehberger::HumanSize::Error)
+    end
+
+    it 'raises when seconds is negative' do
+      expect { described_class.format_rate(1000, -1) }.to raise_error(Philiprehberger::HumanSize::Error)
+    end
+
+    it 'raises when seconds is non-numeric' do
+      expect { described_class.format_rate(1000, '1s') }.to raise_error(Philiprehberger::HumanSize::Error)
+    end
+
+    it 'respects custom precision' do
+      expect(described_class.format_rate(1_234_567, 1, precision: 3)).to eq('1.235 MB/s')
+    end
+  end
 end

@@ -72,6 +72,17 @@ Philiprehberger::HumanSize.convert(1024 * 1024, unit: "MiB")           # => "1.0
 Philiprehberger::HumanSize.convert(1_500_000, unit: "MB", precision: 0) # => "2 MB"
 ```
 
+### Throughput (rate) formatting
+
+Format a byte count and an elapsed duration into a human-readable `/s` rate. Raises `HumanSize::Error` for non-positive durations:
+
+```ruby
+Philiprehberger::HumanSize.format_rate(1_500_000, 1)                  # => "1.5 MB/s"
+Philiprehberger::HumanSize.format_rate(3_000_000, 2)                  # => "1.5 MB/s"
+Philiprehberger::HumanSize.format_rate(1_048_576, 1, binary: true)    # => "1 MiB/s"
+Philiprehberger::HumanSize.format_rate(500_000, 0.5)                  # => "1 MB/s"
+```
+
 ### Parsing
 
 Parse human-readable byte strings back to integer byte counts. Parsing is case-insensitive and supports both SI and binary units:
@@ -110,6 +121,7 @@ Philiprehberger::HumanSize.valid?(123)          # => false
 | `HumanSize.format(bytes, binary: false, precision: 2)` | Convert integer bytes to a human-readable string (SI or binary units) |
 | `HumanSize.format_parts(bytes, binary: false, precision: 2)` | Return a hash with `:value` (Float) and `:unit` (String) |
 | `HumanSize.convert(bytes, unit:, precision: 2)` | Format bytes to a specific unit (e.g. `'MB'`, `'GiB'`); raises `HumanSize::Error` on unknown units |
+| `HumanSize.format_rate(bytes, seconds, binary: false, precision: 2)` | Format a throughput as a human-readable `/s` rate; raises on non-positive `seconds` |
 | `HumanSize.parse(string)` | Parse a human-readable byte string back to an integer byte count |
 | `HumanSize.valid?(string)` | Check if a string is a valid parseable byte size |
 
