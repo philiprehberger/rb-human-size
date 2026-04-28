@@ -7,6 +7,12 @@ and this gem adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-04-27
+
+### Added
+- `compact:` option on `HumanSize.format` — when true, omits the space between value and unit (e.g. `"1.5MB"` instead of `"1.5 MB"`); default is `false` for backwards compatibility.
+- `HumanSize.format_compact(bytes, binary: false, precision: 2)` — shortcut equivalent to `format(..., compact: true)`.
+
 ## [0.5.0] - 2026-04-21
 
 ### Added

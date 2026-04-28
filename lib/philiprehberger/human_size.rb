@@ -31,10 +31,29 @@ module Philiprehberger
     }.freeze
 
     class << self
-      def format(bytes, binary: false, precision: 2)
+      # Format a byte count as a human-readable string.
+      #
+      # @param bytes [Numeric] byte count
+      # @param binary [Boolean] use binary units (KiB, MiB, ...) instead of SI (KB, MB, ...)
+      # @param precision [Integer] decimal precision for non-byte units
+      # @param compact [Boolean] when true, omit the space between value and unit (e.g. `1.5MB`)
+      # @return [String] formatted size string
+      def format(bytes, binary: false, precision: 2, compact: false)
         parts = compute_parts(bytes, binary: binary, precision: precision)
+        separator = compact ? '' : ' '
 
-        "#{format_value(parts[:value], parts[:unit_index], precision)} #{parts[:unit]}"
+        "#{format_value(parts[:value], parts[:unit_index], precision)}#{separator}#{parts[:unit]}"
+      end
+
+      # Format a byte count without the space between value and unit (e.g. `1.5MB`).
+      # Equivalent to {.format} with `compact: true`.
+      #
+      # @param bytes [Numeric] byte count
+      # @param binary [Boolean] use binary units (KiB, MiB, ...)
+      # @param precision [Integer] decimal precision for non-byte units
+      # @return [String] compact size string with no separator
+      def format_compact(bytes, binary: false, precision: 2)
+        format(bytes, binary: binary, precision: precision, compact: true)
       end
 
       def format_parts(bytes, binary: false, precision: 2)

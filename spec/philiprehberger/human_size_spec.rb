@@ -79,6 +79,42 @@ RSpec.describe Philiprehberger::HumanSize do
     it 'raises Error for non-numeric input' do
       expect { described_class.format('hello') }.to raise_error(described_class::Error)
     end
+
+    context 'with compact: true' do
+      it 'omits the space between value and unit for SI sizes' do
+        expect(described_class.format(1_500_000, compact: true)).to eq('1.5MB')
+      end
+
+      it 'omits the space for binary sizes' do
+        expect(described_class.format(1_572_864, binary: true, compact: true)).to eq('1.5MiB')
+      end
+
+      it 'omits the space for sub-base byte values' do
+        expect(described_class.format(500, compact: true)).to eq('500B')
+      end
+
+      it 'omits the space for zero' do
+        expect(described_class.format(0, compact: true)).to eq('0B')
+      end
+
+      it 'preserves the space when compact is false (default)' do
+        expect(described_class.format(1_500_000)).to eq('1.5 MB')
+      end
+    end
+  end
+
+  describe '.format_compact' do
+    it 'formats SI sizes without separator' do
+      expect(described_class.format_compact(1_500_000)).to eq('1.5MB')
+    end
+
+    it 'forwards binary option to format' do
+      expect(described_class.format_compact(1_572_864, binary: true)).to eq('1.5MiB')
+    end
+
+    it 'forwards precision option to format' do
+      expect(described_class.format_compact(1_234_567, precision: 1)).to eq('1.2MB')
+    end
   end
 
   describe '.format_parts' do

@@ -114,11 +114,25 @@ Philiprehberger::HumanSize.valid?("nope")      # => false
 Philiprehberger::HumanSize.valid?(123)          # => false
 ```
 
+### Compact Formatting
+
+Drop the space between the value and the unit for dense UI surfaces (badges,
+tables, log lines). Pass `compact: true` to `format` or use the dedicated
+`format_compact` shortcut:
+
+```ruby
+Philiprehberger::HumanSize.format(1_500_000, compact: true)             # => "1.5MB"
+Philiprehberger::HumanSize.format_compact(1_500_000)                    # => "1.5MB"
+Philiprehberger::HumanSize.format_compact(1_572_864, binary: true)      # => "1.5MiB"
+Philiprehberger::HumanSize.format_compact(500)                          # => "500B"
+```
+
 ## API
 
 | Method | Description |
 |--------|-------------|
-| `HumanSize.format(bytes, binary: false, precision: 2)` | Convert integer bytes to a human-readable string (SI or binary units) |
+| `HumanSize.format(bytes, binary: false, precision: 2, compact: false)` | Convert integer bytes to a human-readable string (SI or binary units); pass `compact: true` to drop the separator |
+| `HumanSize.format_compact(bytes, binary: false, precision: 2)` | Shortcut for `format(..., compact: true)` — no space between value and unit |
 | `HumanSize.format_parts(bytes, binary: false, precision: 2)` | Return a hash with `:value` (Float) and `:unit` (String) |
 | `HumanSize.convert(bytes, unit:, precision: 2)` | Format bytes to a specific unit (e.g. `'MB'`, `'GiB'`); raises `HumanSize::Error` on unknown units |
 | `HumanSize.format_rate(bytes, seconds, binary: false, precision: 2)` | Format a throughput as a human-readable `/s` rate; raises on non-positive `seconds` |
