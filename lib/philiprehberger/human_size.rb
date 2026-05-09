@@ -91,6 +91,21 @@ module Philiprehberger
         "#{format(per_second, binary: binary, precision: precision)}/s"
       end
 
+      # Spaceship comparison of two size values
+      #
+      # Each operand may be a size string (parsed via {.parse}) or a
+      # `Numeric` byte count. Returns `-1`, `0`, or `1` exactly like
+      # Ruby's `<=>` operator. Useful for sorting filenames by size,
+      # threshold checks, and table ordering.
+      #
+      # @param a [String, Numeric] first size
+      # @param b [String, Numeric] second size
+      # @return [Integer] -1 / 0 / 1
+      # @raise [Error] if either value cannot be coerced to a byte count
+      def compare(a, b)
+        to_bytes(a) <=> to_bytes(b)
+      end
+
       def parse(string)
         raise Error, 'input must be a String' unless string.is_a?(String)
 
@@ -116,6 +131,14 @@ module Philiprehberger
       end
 
       private
+
+      def to_bytes(value)
+        case value
+        when Numeric then value
+        when String then parse(value)
+        else raise Error, "cannot compare #{value.inspect} as a size"
+        end
+      end
 
       def compute_parts(bytes, binary:, precision:)
         raise Error, 'bytes must be a Numeric' unless bytes.is_a?(Numeric)

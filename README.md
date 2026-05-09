@@ -127,6 +127,23 @@ Philiprehberger::HumanSize.format_compact(1_572_864, binary: true)      # => "1.
 Philiprehberger::HumanSize.format_compact(500)                          # => "500B"
 ```
 
+### Comparing Sizes
+
+Spaceship comparison of two sizes — accepts strings, numbers, or a mix:
+
+```ruby
+Philiprehberger::HumanSize.compare('500 MB', '1.5 GB')   # => -1
+Philiprehberger::HumanSize.compare('1024 MiB', '1 GiB')  # => 0
+Philiprehberger::HumanSize.compare('2 TB', '500 GB')     # => 1
+Philiprehberger::HumanSize.compare(2048, '1 KB')         # => 1
+
+# Sort filenames by size:
+['1 GB', '500 MB', '2 KB', '1.5 TB'].sort do |a, b|
+  Philiprehberger::HumanSize.compare(a, b)
+end
+# => ["2 KB", "500 MB", "1 GB", "1.5 TB"]
+```
+
 ## API
 
 | Method | Description |
@@ -138,6 +155,7 @@ Philiprehberger::HumanSize.format_compact(500)                          # => "50
 | `HumanSize.format_rate(bytes, seconds, binary: false, precision: 2)` | Format a throughput as a human-readable `/s` rate; raises on non-positive `seconds` |
 | `HumanSize.parse(string)` | Parse a human-readable byte string back to an integer byte count |
 | `HumanSize.valid?(string)` | Check if a string is a valid parseable byte size |
+| `HumanSize.compare(a, b)` | Spaceship comparison of two sizes (accepts strings, numbers, or a mix); returns `-1`, `0`, or `1` |
 
 ## Development
 

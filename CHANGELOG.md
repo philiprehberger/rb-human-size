@@ -7,6 +7,11 @@ and this gem adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.7.0] - 2026-05-09
+
+### Added
+- `HumanSize.compare(a, b)` — spaceship comparison of two sizes; each operand may be a size string (parsed via `.parse`) or a `Numeric` byte count. Returns `-1`, `0`, or `1`. Useful for sorting filenames by size, threshold checks, and table ordering.
+
 ## [0.6.0] - 2026-04-27
 
 ### Added

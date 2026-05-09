@@ -321,4 +321,46 @@ RSpec.describe Philiprehberger::HumanSize do
       expect(described_class.format_rate(1_234_567, 1, precision: 3)).to eq('1.235 MB/s')
     end
   end
+
+  describe '.compare' do
+    it 'returns -1 when the first is smaller' do
+      expect(described_class.compare('500 MB', '1.5 GB')).to eq(-1)
+    end
+
+    it 'returns 0 when sizes are equal' do
+      expect(described_class.compare('1024 MiB', '1 GiB')).to eq(0)
+    end
+
+    it 'returns 1 when the first is larger' do
+      expect(described_class.compare('2 TB', '500 GB')).to eq(1)
+    end
+
+    it 'accepts a Numeric byte count on either side' do
+      expect(described_class.compare(2048, '1 KB')).to eq(1)
+      expect(described_class.compare('1 KB', 2048)).to eq(-1)
+      expect(described_class.compare(1000, '1 KB')).to eq(0)
+    end
+
+    it 'compares two Numeric byte counts directly' do
+      expect(described_class.compare(100, 200)).to eq(-1)
+      expect(described_class.compare(200, 100)).to eq(1)
+      expect(described_class.compare(150, 150)).to eq(0)
+    end
+
+    it 'works with sort' do
+      sizes = ['1 GB', '500 MB', '2 KB', '1.5 TB']
+      sorted = sizes.sort { |x, y| described_class.compare(x, y) }
+      expect(sorted).to eq(['2 KB', '500 MB', '1 GB', '1.5 TB'])
+    end
+
+    it 'raises on unparseable strings' do
+      expect { described_class.compare('not-a-size', '1 KB') }
+        .to raise_error(Philiprehberger::HumanSize::Error)
+    end
+
+    it 'raises on unsupported types' do
+      expect { described_class.compare(:big, '1 KB') }
+        .to raise_error(Philiprehberger::HumanSize::Error)
+    end
+  end
 end
