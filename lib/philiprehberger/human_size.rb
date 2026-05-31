@@ -91,6 +91,20 @@ module Philiprehberger
         "#{format(per_second, binary: binary, precision: precision)}/s"
       end
 
+      # Sum an enumerable of size strings, byte counts, or a mix, and return
+      # the formatted total. Strings are parsed via {.parse}; Numerics are
+      # treated as byte counts. Empty input returns the zero-byte string.
+      #
+      # @param values [Enumerable<String, Numeric>] sizes to sum
+      # @param binary [Boolean] use binary units (KiB, MiB, ...) in the output
+      # @param precision [Integer] decimal precision for non-byte units
+      # @return [String] formatted total
+      # @raise [Error] if any value is not coercible to a byte count
+      def sum(values, binary: false, precision: 2)
+        total = values.sum { |v| to_bytes(v) }
+        format(total, binary: binary, precision: precision)
+      end
+
       # Spaceship comparison of two size values
       #
       # Each operand may be a size string (parsed via {.parse}) or a

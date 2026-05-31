@@ -363,4 +363,34 @@ RSpec.describe Philiprehberger::HumanSize do
         .to raise_error(Philiprehberger::HumanSize::Error)
     end
   end
+
+  describe '.sum' do
+    it 'sums strings of mixed SI units' do
+      expect(described_class.sum(['500 MB', '1.5 GB'])).to eq('2 GB')
+    end
+
+    it 'sums a mix of size strings and Numeric byte counts' do
+      expect(described_class.sum(['500 MB', 1_500_000_000])).to eq('2 GB')
+    end
+
+    it 'returns 0 B for an empty enumerable' do
+      expect(described_class.sum([])).to eq('0 B')
+    end
+
+    it 'respects binary: true' do
+      expect(described_class.sum(['1024 MiB', '1 GiB'], binary: true)).to eq('2 GiB')
+    end
+
+    it 'respects precision' do
+      expect(described_class.sum(['1500 MB', '1500 MB'], precision: 0)).to eq('3 GB')
+    end
+
+    it 'raises on unparseable values' do
+      expect { described_class.sum(['nope']) }.to raise_error(Philiprehberger::HumanSize::Error)
+    end
+
+    it 'raises on unsupported types' do
+      expect { described_class.sum([:big]) }.to raise_error(Philiprehberger::HumanSize::Error)
+    end
+  end
 end

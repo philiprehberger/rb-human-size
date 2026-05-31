@@ -4,6 +4,8 @@
 [![Gem Version](https://badge.fury.io/rb/philiprehberger-human_size.svg)](https://rubygems.org/gems/philiprehberger-human_size)
 [![Last updated](https://img.shields.io/github/last-commit/philiprehberger/rb-human-size)](https://github.com/philiprehberger/rb-human-size/commits/main)
 
+![philiprehberger-human_size](https://raw.githubusercontent.com/philiprehberger/rb-human-size/main/package-card.webp)
+
 Bidirectional byte size formatting with SI and binary units
 
 ## Requirements
@@ -127,6 +129,19 @@ Philiprehberger::HumanSize.format_compact(1_572_864, binary: true)      # => "1.
 Philiprehberger::HumanSize.format_compact(500)                          # => "500B"
 ```
 
+### Summing Sizes
+
+Sum an enumerable of size strings, byte counts, or a mix — the result is
+formatted with the same SI/binary/precision flags as `format`:
+
+```ruby
+Philiprehberger::HumanSize.sum(['500 MB', '1.5 GB'])            # => "2 GB"
+Philiprehberger::HumanSize.sum(['500 MB', 1_500_000_000])        # => "2 GB"
+Philiprehberger::HumanSize.sum(['1024 MiB', '1 GiB'], binary: true)
+# => "2 GiB"
+Philiprehberger::HumanSize.sum([])                               # => "0 B"
+```
+
 ### Comparing Sizes
 
 Spaceship comparison of two sizes — accepts strings, numbers, or a mix:
@@ -156,6 +171,7 @@ end
 | `HumanSize.parse(string)` | Parse a human-readable byte string back to an integer byte count |
 | `HumanSize.valid?(string)` | Check if a string is a valid parseable byte size |
 | `HumanSize.compare(a, b)` | Spaceship comparison of two sizes (accepts strings, numbers, or a mix); returns `-1`, `0`, or `1` |
+| `HumanSize.sum(values, binary: false, precision: 2)` | Sum an enumerable of size strings, byte counts, or a mix; returns a formatted total (`"0 B"` for empty input) |
 
 ## Development
 

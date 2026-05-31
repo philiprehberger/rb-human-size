@@ -7,6 +7,12 @@ and this gem adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.8.0] - 2026-05-30
+
+### Added
+- `HumanSize.sum(values, binary: false, precision: 2)` — sum an enumerable of size strings, byte counts, or a mix; returns a formatted total. Empty input returns `"0 B"`.
+- Card image to README per readme-template guide
+
 ## [0.7.0] - 2026-05-09
 
 ### Added
